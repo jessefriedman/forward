@@ -97,7 +97,7 @@ class WP_Forward {
 
 	function frwrd_schedule_planb() {
 		if ( ! wp_next_scheduled( 'frwrd_daily_checkup' ) ) {
-			wp_schedule_event( time(), '10 Seconds', 'frwrd_daily_checkup');
+			wp_schedule_event( time(), 'tensecs', 'frwrd_daily_checkup');
 		}
 	}
 
@@ -107,7 +107,7 @@ class WP_Forward {
 
 	function cron_add_weekly( $schedules ) {
 		// Adds once weekly to the existing schedules.
-		$schedules['weekly'] = array(
+		$schedules['tensecs'] = array(
 			'interval' => 10,
 			'display' => __( '10 Seconds' )
 		);
