@@ -93,17 +93,6 @@ class WP_Forward {
 	function frwrd_create_holding_category() {
 		$this->frwrd_draft_cat = wp_create_category( 'Forward Drafts', 0 );
 		update_option( 'frwrd_draft_cat', $this->frwrd_draft_cat );
-
-
-		$my_post = array(
-			'post_title'    => 'My post',
-			'post_content'  => 'This is my post.',
-			'post_status'   => 'publish',
-			'post_author'   => 1,
-			'post_category' => array(8,39)
-		);
-
-		wp_insert_post( $my_post );
 	}
 
 	function frwrd_schedule_planb() {
@@ -114,16 +103,6 @@ class WP_Forward {
 
 	function frwrd_go_for_daily_checkup() {
 		update_option( 'frwrd_cron', 'scheduled' );
-		$my_post = array(
-			'post_title'    => 'My post',
-			'post_content'  => 'This is my post.',
-			'post_status'   => 'publish',
-			'post_author'   => 1,
-			'post_category' => array(8,39)
-		);
-
-		wp_insert_post( $my_post );
-
 	}
 
 	function cron_add_weekly( $schedules ) {
