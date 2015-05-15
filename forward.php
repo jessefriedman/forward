@@ -20,14 +20,13 @@ class WP_Forward {
 		register_activation_hook( __FILE__, array( $this, 'frwrd_create_holding_category' ) );
 		add_action( 'admin_init', array( $this, 'frwrd_admin_init' ) );
 		add_action( 'admin_menu', array( $this, 'frwrd_admin_menu' ) );
+		add_action( 'frwrd_daily_checkup', array( $this, 'frwrd_go_for_daily_checkup' ) );
 		add_filter( 'cron_schedules',  array( $this, 'cron_add_weekly' ) );
-
 	}
 
 	function frwrd_admin_init() {
 		if(isset($_GET['settings-updated']) && $_GET['settings-updated']) {
-			add_action( 'frwrd_daily_checkup', array( $this, 'frwrd_go_for_daily_checkup' ) );
-			$this->frwrd_schedule_planb();
+			$this->frwrd_schedule();
 		}
 
 		$this->current_frwrd_options = get_option( 'frwrd_config_settings' ) ? get_option( 'frwrd_config_settings' ) : 'empty';
@@ -95,24 +94,19 @@ class WP_Forward {
 		update_option( 'frwrd_draft_cat', $this->frwrd_draft_cat );
 	}
 
-	function frwrd_schedule_planb() {
+	function frwrd_schedule() {
 		if ( ! wp_next_scheduled( 'frwrd_daily_checkup' ) ) {
-			wp_schedule_event( time(), 'tensecs', 'frwrd_daily_checkup');
+			$currenttime = current_time( 'timestamp' );
+			if ( $currenttime )
+			wp_schedule_event( time(), 'daily', 'frwrd_daily_checkup');
 		}
 	}
 
 	function frwrd_go_for_daily_checkup() {
-		update_option( 'frwrd_cron', 'scheduled' );
+
 	}
 
-	function cron_add_weekly( $schedules ) {
-		// Adds once weekly to the existing schedules.
-		$schedules['tensecs'] = array(
-			'interval' => 10,
-			'display' => __( '10 Seconds' )
-		);
-		return $schedules;
-	}
+
 
 }
 
